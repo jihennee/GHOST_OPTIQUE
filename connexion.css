@@ -1,0 +1,111 @@
+body
+{
+    width: 100%;
+    height: 596px;
+    background-size: cover;
+    background: url('../images/enfant.jpg') no-repeat 65% 20%;
+    font-family: 'Abel', sans-serif;	
+    margin: 0px;
+	padding: 0px;
+}
+#ERR{
+    margin-top: 25px;
+    background-color: rgb(223, 108, 108);
+    height: 70px;
+    width: 100%;
+    border-radius: 10px;
+    border : 1px solid red;
+
+}
+
+#ERR>li{
+    color: rgb(241, 229, 229);
+    font-weight: 500;
+
+
+}
+.wrap{
+    max-width: 350px;
+    border-radius: 20px;
+    margin: auto;
+    background: rgba(0,0,0,0.8);
+    box-sizing: border-box;
+    padding:40px;
+    color: #fff;
+    margin-top: 100px;
+}
+
+h2{
+    text-align: center;
+    transition
+
+}
+input[type=text],input[type=email],input[type=password]{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 5px;
+    background: rgba(0,0,0,0.10);
+    outline: none;
+    border: none;
+    border-bottom: 1px dotted #fff;
+    color: #fff;
+    border-radius: 5px;
+    margin :5px;
+    font-weight: bold;
+    
+}
+
+
+
+input[type=submit]{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 0;
+    margin-top: 30px;
+    outline: none;
+    border: none;
+    background: #60adde;
+    opacity: 0.7;
+    border-radius: 20px;
+    font-size: 20px;
+    color: #fff;
+}
+
+input[type=submit]:hover
+{
+    background-color: white;
+    color:#60adde;
+}
+
+.navigation{
+    background-color:black;
+    opacity:0.9;
+      height:50px;
+      width:100%;
+  }
+  
+  .navigation>a{
+      color:white;
+      font-weight:bold;
+      text-decoration:none;
+      display: inline-block;
+      padding: 15px 13px;
+      color: #FFF;
+      font-weight:bold;
+      font-size:18px;
+  
+  }
+  
+  .navigation>a:hover{
+      color: #60adde;
+      
+  }
+
+
+
+
+
+
+
+
+
