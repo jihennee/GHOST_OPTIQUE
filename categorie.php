@@ -1,4 +1,17 @@
-<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="Dashboard">
+  <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+  <title>Dashio - Bootstrap Admin Template</title>
+
+  <!-- Favicons -->
+  <link href="img/favicon.png" rel="icon">
+  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Bootstrap core CSS -->
   <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -217,7 +230,7 @@
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="auth.html">Logout</a></li>
+          <li><a class="logout" href="login.html">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -256,7 +269,7 @@
               <span>Produits</span>
               </a>
             <ul class="sub">
-             
+       
               <li><a href="categorie.php">Categorie</a></li>
               <li class="active"><a href="index.php"> Produit</a></li>
                </ul>
@@ -370,6 +383,7 @@
 </body>
 
 </html>
+
 <?php
 
 if(isset($_POST['search']))
@@ -377,28 +391,28 @@ if(isset($_POST['search']))
     $valueToSearch = $_POST['valueToSearch'];
     // search in all table columns
     // using concat mysql function
-    $query = "SELECT * FROM `produits` WHERE CONCAT(id, nom, prix,quantitee,couleur) LIKE '%".$valueToSearch."%'";
+    $query = "SELECT * FROM `categories` WHERE CONCAT(id, marque, noncategorie) LIKE '%".$valueToSearch."%'";
     $search_result = filterTable($query);
 
 }
  else {
-    $query = "SELECT * FROM `produits` where id = '*' ";
+    $query = "SELECT * FROM `categories` where id ='*' ";
     $search_result = filterTable($query);
 }
 
 // function to connect and execute the query
 function filterTable($query)
-{  $connect = mysqli_connect("localhost", "root", "", "test");
+{
+    $connect = mysqli_connect("localhost", "root", "", "test");
     $filter_Result = mysqli_query($connect, $query);
     return $filter_Result;
 }
 
 ?>
 
-
   <body>
 
-        <form action="index.php" method="post">
+        <form action="categorie.php" method="post">
 		  <div class="input-group">
 
             <input type="text" name="valueToSearch" placeholder="valeur a rechercher"><br><br>
@@ -406,30 +420,19 @@ function filterTable($query)
 
               </div>
             <table>
-
-
                 <tr>
-
                     <th>id</th>
-                    <th>nom</th>
-                    <th>prix</th>
-					<th>quantitee</th>
-					<th>couleur</th>
-					
+                    <th>marque</th>
+                    <th>noncategorie</th>
 
                 </tr>
 
       <!-- populate table from mysql database -->
-              <!-- populate table from mysql database -->
                 <?php while($row = mysqli_fetch_array($search_result)):?>
                 <tr>
                     <td><?php echo $row['id'];?></td>
-                    <td><?php echo $row['nom'];?></td>
-                    <td><?php echo $row['prix'];?></td>
-					<td><?php echo $row['quantitee'];?></td>
-					<td><?php echo $row['couleur'];?></td>
-					<td><?php if ($row['quantitee'] != '0' ) echo 'disponible' ;else  echo ' non disponible';?></td>
-
+                    <td><?php echo $row['marque'];?></td>
+                    <td><?php echo $row['noncategorie'];?></td>
 
                 </tr>
                 <?php endwhile;?>
@@ -441,24 +444,26 @@ function filterTable($query)
             </table>
         </form>
 
-    </body>
-</html>
+<!DOCTYPE html>
 <?php
-include ('modifierProduit.php');
-require_once"../core/ProduitC.php";
-
+include ('modifierCategories.php');
+require_once"../core/CategoriesC.php";
 //create instance of our employeC class
-$ec=new ProduitC();
+$ec=new CategoriesC();
 //get data
 $liste=$ec->afficheP();
-//<input type="hidden" name="ref" value="<?php echo $ref;!>">
+//<input type="hidden" name="id" value="<?php echo $id;!>">
 
 ?>
+
+
+
 <html>
 <head>
 
-    <title> CRUD produit</title>
+    <title> CRUD Categories </title>
     <link rel="stylesheet" type="text/css" href="style.css">
+
 
 </head>
 <body>
@@ -472,36 +477,30 @@ $liste=$ec->afficheP();
         </div>
     <?php endif?>
 <div id="global">
-     <!-- <form method="post" action="ajoutProduit.php">-->
-        <form method="POST" <?php if ($edit_state == false): ?>action="ajoutProduit.php" <?php else :?> action="modifierProduit.php" <?php  endif?>>
+     <!-- <form method="post" action="ajoutCategories.php">-->
+
+
+
+
+        <form method="post" <?php if ($edit_state == false): ?>action="ajoutCategories.php" <?php else :?> action="modifierCategories.php" <?php  endif?>>
 
             <div class="input-group">
                 <label>id</label>
-                <input type="text" class="form-control" name="id" required placeholder="entrer la reference de votre produit"  pattern="[0-9]{3,15}" <?php if ($edit_state == true): ?> value="<?php echo $id;?>" <?php endif?> >
-
+                <input type="text" name="id" required pattern="[0-9]{3,15}" <?php if ($edit_state == true): ?> value="<?php echo $id;?>" <?php endif?> >
             </div>
             <div class="input-group">
-                <label>nom</label>
-                <input type="text" class="form-control" name="nom" required placeholder="entrer le non de votre produit" pattern="[a-zA-Z]{3,15}$"<?php if ($edit_state == true): ?> value="<?php echo $nom;?>" <?php endif?>>
+                <label>marque</label>
+                <input type="text" name="marque" required  pattern="[a-zA-Z]{3,15}$" <?php if ($edit_state == true): ?> value="<?php echo $marque;?>" <?php endif?>>
             </div>
             <div class="input-group">
-                <label>prix</label>
-                <input type="text" class="form-control" name="prix" required  placeholder="entrer le prix de votre produit"pattern="[0-9]{0,3}" <?php if ($edit_state == true): ?> value="<?php echo $prix;?>" <?php endif?>>
-            </div>
-			<div class="input-group">
-                <label>quantitee</label>
-                <input type="text" class="form-control" name="quantitee" required placeholder="entrer la quantitee disponible" pattern="[0-9]{0,3}"<?php if ($edit_state == true): ?> value="<?php echo $quantitee;?>" <?php endif?>>
-            </div>
-			<div class="input-group">
-                <label>couleur</label>
-                <input type="text" class="form-control" name="couleur" required placeholder="choissisez un  couleur" pattern="[a-zA-Z]{3,15}$" <?php if ($edit_state == true): ?> value="<?php echo $couleur;?>" <?php endif?>>
-            </div>
-
-
+                <label>noncategorie</label>
+                <input type="text" name="noncategorie" required pattern="[a-zA-Z]{3,15}$" <?php if ($edit_state == true): ?> value="<?php echo $noncategorie;?>" <?php endif?>>
+                       </div>
             <div class="input-group">
                  <?php if ($edit_state == false)  :?>
 
-                     <button type="submit" name="save" class="btn">Save</button>
+                     <button type="submit" name="save" class="btn" >Save</button>
+
                     <?php else :?>
 
                 <button type="submit" name="update" class="btn">Update</button>
@@ -520,45 +519,43 @@ $liste=$ec->afficheP();
         <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>nom</th>
-                        <th>prix</th>
-						 <th>quantitee</th>
-						  <th>couleur</th>
-						
-
+                        <th>id</th>
+                        <th>marque</th>
+                        <th>noncategorie</th>
                         <th colspan="2"> Action </th>
                     </tr>
                 </thead>
                 <tbody>
 
+				    <?php while($row = mysqli_fetch_array($search_result)):?>
+                <tr>
+                    <td><?php echo $row['id'];?></td>
+                    <td><?php echo $row['marque'];?></td>
+                    <td><?php echo $row['noncategorie'];?></td>
+
+                </tr>
+                <?php endwhile;?>
+
 
 
 
                 <?php
-                foreach ($liste as $value){ echo'<tr><td>'.$value['id'].'</td><td>'.$value['nom']. '</td><td>'.$value['prix'].'</td><td>'.$value['quantitee']. '</td> <td>'.$value['couleur'].'</td> ';?>
-	        
-					  <td>
-                            <a class="edit_btn" href="index.php?edit=<?php echo $value['id'];?>">Edit</a>
+                foreach ($liste as $value){ echo'<tr><td>'.$value['id'].'</td><td>'.$value['marque']. '</td><td>'.$value['noncategorie'].'</td>';?>
+                        <td>
+                            <a class="edit_btn" href="categorie.php?edit=<?php echo $value['id'];?>">Edit</a>
                         </td>
                         <td>
 
-                            <a class="del_btn" onclick="return confirm('do you want To Delete !!')" href="supprimerProduit.php?del=<?PHP echo $value['id'];?>">Delete</a>
+                            <a class="del_btn" onclick="return confirm('do you want TO Delete !!')"  href="supprimerCategories.php?del=<?PHP echo $value['id'];?>">Delete</a>
 
                         </td>
 
                     </tr>
 
 
-
-                <?php }
-
-
+                <?php
+				}
                 ?>
-
-
-
-				
 
 
 

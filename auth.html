@@ -1,18 +1,4 @@
-<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Bootstrap core CSS -->
-  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <!--external css-->
-  <link href="lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
-  <link href="lib/dropzone/css/dropzone.css" rel="stylesheet" />
-  <!-- Custom styles for this template -->
-  <link href="css/style.css" rel="stylesheet">
-  <link href="css/style-responsive.css" rel="stylesheet">
-
-  <!-- =======================================================
-    Template Name: Dashio
-    Template URL: https://templatemag.com/dashio-bootstrap-admin-template/
-    Author: TemplateMag.com
+Author: TemplateMag.com
     License: https://templatemag.com/license/
   ======================================================= -->
 </head>
@@ -370,201 +356,24 @@
 </body>
 
 </html>
-<?php
-
-if(isset($_POST['search']))
-{
-    $valueToSearch = $_POST['valueToSearch'];
-    // search in all table columns
-    // using concat mysql function
-    $query = "SELECT * FROM `produits` WHERE CONCAT(id, nom, prix,quantitee,couleur) LIKE '%".$valueToSearch."%'";
-    $search_result = filterTable($query);
-
-}
- else {
-    $query = "SELECT * FROM `produits` where id = '*' ";
-    $search_result = filterTable($query);
-}
-
-// function to connect and execute the query
-function filterTable($query)
-{  $connect = mysqli_connect("localhost", "root", "", "test");
-    $filter_Result = mysqli_query($connect, $query);
-    return $filter_Result;
-}
-
-?>
-
-
-  <body>
-
-        <form action="index.php" method="post">
-		  <div class="input-group">
-
-            <input type="text" name="valueToSearch" placeholder="valeur a rechercher"><br><br>
-            <button type="submit" name="search" class="btn">search</button>
-
-              </div>
-            <table>
-
-
-                <tr>
-
-                    <th>id</th>
-                    <th>nom</th>
-                    <th>prix</th>
-					<th>quantitee</th>
-					<th>couleur</th>
-					
-
-                </tr>
-
-      <!-- populate table from mysql database -->
-              <!-- populate table from mysql database -->
-                <?php while($row = mysqli_fetch_array($search_result)):?>
-                <tr>
-                    <td><?php echo $row['id'];?></td>
-                    <td><?php echo $row['nom'];?></td>
-                    <td><?php echo $row['prix'];?></td>
-					<td><?php echo $row['quantitee'];?></td>
-					<td><?php echo $row['couleur'];?></td>
-					<td><?php if ($row['quantitee'] != '0' ) echo 'disponible' ;else  echo ' non disponible';?></td>
-
-
-                </tr>
-                <?php endwhile;?>
-
-
-
-
-
-            </table>
-        </form>
-
-    </body>
-</html>
-<?php
-include ('modifierProduit.php');
-require_once"../core/ProduitC.php";
-
-//create instance of our employeC class
-$ec=new ProduitC();
-//get data
-$liste=$ec->afficheP();
-//<input type="hidden" name="ref" value="<?php echo $ref;!>">
-
-?>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
-    <title> CRUD produit</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
 </head>
+
 <body>
-    <?php if (isset($_SESSION['msg'])):?>
-        <div class="msg">
-            <?php
-                echo $_SESSION['msg'];
-                unset( $_SESSION['msg']);
-            ?>
-
-        </div>
-    <?php endif?>
-<div id="global">
-     <!-- <form method="post" action="ajoutProduit.php">-->
-        <form method="POST" <?php if ($edit_state == false): ?>action="ajoutProduit.php" <?php else :?> action="modifierProduit.php" <?php  endif?>>
-
-            <div class="input-group">
-                <label>id</label>
-                <input type="text" class="form-control" name="id" required placeholder="entrer la reference de votre produit"  pattern="[0-9]{3,15}" <?php if ($edit_state == true): ?> value="<?php echo $id;?>" <?php endif?> >
-
-            </div>
-            <div class="input-group">
-                <label>nom</label>
-                <input type="text" class="form-control" name="nom" required placeholder="entrer le non de votre produit" pattern="[a-zA-Z]{3,15}$"<?php if ($edit_state == true): ?> value="<?php echo $nom;?>" <?php endif?>>
-            </div>
-            <div class="input-group">
-                <label>prix</label>
-                <input type="text" class="form-control" name="prix" required  placeholder="entrer le prix de votre produit"pattern="[0-9]{0,3}" <?php if ($edit_state == true): ?> value="<?php echo $prix;?>" <?php endif?>>
-            </div>
-			<div class="input-group">
-                <label>quantitee</label>
-                <input type="text" class="form-control" name="quantitee" required placeholder="entrer la quantitee disponible" pattern="[0-9]{0,3}"<?php if ($edit_state == true): ?> value="<?php echo $quantitee;?>" <?php endif?>>
-            </div>
-			<div class="input-group">
-                <label>couleur</label>
-                <input type="text" class="form-control" name="couleur" required placeholder="choissisez un  couleur" pattern="[a-zA-Z]{3,15}$" <?php if ($edit_state == true): ?> value="<?php echo $couleur;?>" <?php endif?>>
-            </div>
-
-
-            <div class="input-group">
-                 <?php if ($edit_state == false)  :?>
-
-                     <button type="submit" name="save" class="btn">Save</button>
-                    <?php else :?>
-
-                <button type="submit" name="update" class="btn">Update</button>
-                    <?php endif?>
-
-
-
-
-            </div>
-
-        </form>
-
-
-
-
-        <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>nom</th>
-                        <th>prix</th>
-						 <th>quantitee</th>
-						  <th>couleur</th>
-						
-
-                        <th colspan="2"> Action </th>
-                    </tr>
-                </thead>
-                <tbody>
-
-
-
-
-                <?php
-                foreach ($liste as $value){ echo'<tr><td>'.$value['id'].'</td><td>'.$value['nom']. '</td><td>'.$value['prix'].'</td><td>'.$value['quantitee']. '</td> <td>'.$value['couleur'].'</td> ';?>
-	        
-					  <td>
-                            <a class="edit_btn" href="index.php?edit=<?php echo $value['id'];?>">Edit</a>
-                        </td>
-                        <td>
-
-                            <a class="del_btn" onclick="return confirm('do you want To Delete !!')" href="supprimerProduit.php?del=<?PHP echo $value['id'];?>">Delete</a>
-
-                        </td>
-
-                    </tr>
-
-
-
-                <?php }
-
-
-                ?>
-
-
-
-				
-
-
-
-                </tbody>
-        </table>
-</div>
-
+<form id="form1" name="form1" method="POST" action="connexion.php">
+  <p>Login :
+    <input type="text" name="login" id="login" />
+  </p>
+  <p>Password : 
+    <input type="password" name="pwd" id="pwd" />
+  </p>
+  <p>
+    <input type="submit" name="button" id="button" value="Valider" />
+  </p>
+</form>
 </body>
 </html>
